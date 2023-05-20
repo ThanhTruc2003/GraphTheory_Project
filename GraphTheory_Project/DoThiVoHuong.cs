@@ -8,7 +8,7 @@ namespace GraphTheory_Project
 {
     public class DoThiVoHuong
     {
-        List<Dinh> Dinh = new List<Dinh>();
-        List<Canh> Canh = new List<Canh>();
+        public List<Dinh> Dinh = new List<Dinh>();
+        public List<Canh> Canh = new List<Canh>();
     }
 }

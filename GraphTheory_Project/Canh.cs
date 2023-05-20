@@ -16,11 +16,11 @@ namespace GraphTheory_Project
         {
         }
 
-        public Canh(int trongso, Dinh dinhdau, Dinh dinhcuoi)
+        public Canh(int Trongso, Dinh Dinhdau, Dinh Dinhcuoi)
         {
-            Trongso1 = trongso;
-            Dinhdau1 = dinhdau;
-            Dinhcuoi1 = dinhcuoi;
+            this.Trongso = Trongso;
+            this.Dinhdau = Dinhdau;
+            this.Dinhcuoi = Dinhcuoi;
         }
 
         public int Trongso1 { get; set; }

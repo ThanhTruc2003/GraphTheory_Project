@@ -8,7 +8,7 @@ namespace GraphTheory_Project
 {
     public class Dinh
     {
-        string giatri = "";
+        string ten = "";
         int toadoX = 0;
         int toadoY = 0;
 
@@ -16,14 +16,14 @@ namespace GraphTheory_Project
         {
         }
 
-        public Dinh(string giatri, int toadoX, int toadoY)
+        public Dinh(string ten, int toadoX, int toadoY)
         {
-            this.Giatri = giatri;
+            this.Ten = ten;
             this.ToadoX = toadoX;
             this.ToadoY = toadoY;
         }
 
-        public string Giatri { get; set; }
+        public string Ten { get; set; }
         public int ToadoX { get; set; }
         public int ToadoY { get; set; }
     }
