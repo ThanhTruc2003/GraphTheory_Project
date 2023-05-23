@@ -15,13 +15,16 @@ namespace GraphTheory_Project
     public partial class GraphTheory_Project : Form
     {
         private DoThiVoHuong dtvh;
+        private int widthDinh = 180;
+        private int heightDinh = 100;
+        private int heightTextbox = 46;
 
         public GraphTheory_Project()
         {
             InitializeComponent();
             dtvh = new DoThiVoHuong();
         }
- 
+
         private void panel_Graph_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -50,34 +53,9 @@ namespace GraphTheory_Project
             g.DrawRectangle(p, 0, 0, panel_FeatureWidth - 1, panel_FeatureHeight - 1);
         }
 
-        private void bt_themDinh_Click(object sender, EventArgs e)
+        private void veDinh()
         {
-            string tenDinh;
-            tenDinh = txbThemDinh.Text;
-            string[] TenDinh = { "A", "B", "C" }; // Mảng chứa tên đỉnh
-            int[] toadoX = { 100, 200, 300 }; // Mảng chứa tọa độ X của các đỉnh
-            int[] toadoY = { 150, 250, 350 }; // Mảng chứa tọa độ Y của các đỉnh
-
-            // Kiểm tra số lượng tọa độ X và Y phải giống nhau
-            if (TenDinh.Length != toadoX.Length || TenDinh.Length != toadoY.Length)
-            {
-                // Xử lý lỗi hoặc thông báo cho người dùng
-                MessageBox.Show("Lỗi tọa độ", "Warming", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                    Dinh newDinh = new Dinh();
-                    newDinh.Ten = tenDinh;
-                       // Lấy tọa độ Y của đỉnh thứ i
-                    dtvh.Dinh.Add(newDinh);
-                    themDinh();
-                    txbThemDinh.Text = "";
-            }
-        }
-
-        private void themDinh()
-        {
-            // Lấy graphics từ Panel
+            // Lấy graphics từ panel_Graph
             Graphics g = panel_Graph.CreateGraphics();
 
             // Vẽ các đỉnh trên đồ thị
@@ -87,8 +65,70 @@ namespace GraphTheory_Project
                 int x = dinh.ToadoX;
                 int y = dinh.ToadoY;
                 g.FillEllipse(Brushes.Red, x, y, 20, 20);
-                g.DrawString(dinh.Ten, new Font("Arial", 14), Brushes.Black, x + 2, y - 20);
+                g.DrawString(dinh.Ten, new Font("Arial", 14), Brushes.Black, x + 1, y - 20);
             }
         }
+
+        private void bt_themDinh_Click(object sender, EventArgs e)
+        {
+            Dinh newDinh = new Dinh();
+            string tenDinh = txbThemDinh.Text;
+            int length = dtvh.Dinh.Count;        // Lấy số lượng của lớp Đỉnh
+            if (txbThemDinh.Text == "")
+            {
+                // Kiểm tra đầu vào
+                MessageBox.Show("Vui lòng nhập đỉnh", "Warming", MessageBoxButtons.OK, MessageBoxIcon.Warning);   
+            }
+            else
+            { 
+                // Tạo đỉnh đầu tiên
+                if (length == 0)
+                {
+                    newDinh.Ten = tenDinh;
+                    newDinh.ToadoX = 137;
+                    newDinh.ToadoY = 99;
+                    dtvh.Dinh.Add(newDinh);
+                    veDinh();
+                }
+                // Tạo đỉnh tiếp theo
+                else if (length > 0)
+                {
+                    // Lấy đỉnh cuối của mảng Đỉnh
+                    Dinh dinhCuoi = dtvh.Dinh[length - 1];
+
+                    // Kiểm tra tọa độ x của đỉnh được tạo với chiều rộng của panel_Graph
+                    if (dinhCuoi.ToadoX + 20 + widthDinh >= panel_Graph.Width - 1)
+                    {
+                        // Kiểm tra tọa độ y của đỉnh được tạo với (chiều cao của panel_Graph - chiều cao của textbox)
+                        if (dinhCuoi.ToadoY + 20 + heightDinh >= panel_Graph.Height - heightTextbox)
+                        {
+                            MessageBox.Show("Không thể thêm đỉnh", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;      // Thoát khỏi hàm
+                        }
+                        else
+                        {
+                            // Gán giá trị tọa độ x của đỉnh được tạo = với giá trị tọa độ x đỉnh đầu tiên
+                            // Gía trị tọa độ y của đỉnh được tạo = giá trị tọa độ y đỉnh đầu tiên + đường kính của hình tròn được vẽ + khoảng cách chiều cao của 2 đỉnh
+                            newDinh.ToadoX = 137;
+                            newDinh.ToadoY = dinhCuoi.ToadoY + 20 + heightDinh;
+                        }
+                    }
+                    else
+                    {
+                        // Gán giá trị tọa độ x của đỉnh được tạo = giá trị tọa độ x của đỉnh đầu tiên + đường kính của hình tròn được vẽ + khoảng cách chiều rộng của 2 đỉnh
+                        // Gán giá trị tọa độ y của đỉnh được tạo = giá trị tọa độ y của đỉnh đầu tiên
+                        newDinh.ToadoX = dinhCuoi.ToadoX + 20 + widthDinh;
+                        newDinh.ToadoY = dinhCuoi.ToadoY;
+                    }
+                    newDinh.Ten = tenDinh;
+                    dtvh.Dinh.Add(newDinh);
+                    veDinh();
+                }
+                // Clear giá trị đầu vào
+                txbThemDinh.Text = "";
+            }
+        }
+
+
     }
 }
